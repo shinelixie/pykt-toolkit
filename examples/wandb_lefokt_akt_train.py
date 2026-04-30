@@ -5,8 +5,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset_name", type=str, default="algebra2005")
     parser.add_argument("--model_name", type=str, default="lefokt_akt")
-    # /qid_noforgetting/qid_ailibi/qid_log/qid_power/qid_fire/qid_t5/qid_sandwich
-    parser.add_argument("--emb_type", type=str, default="qid") 
+    # /qid_noforgetting/qid_alibi/qid_log/qid_power/qid_fire/qid_t5/qid_sandwich
+    parser.add_argument("--emb_type", type=str, default="qid_alibi") 
     parser.add_argument("--save_dir", type=str, default="saved_model")
     # parser.add_argument("--learning_rate", type=float, default=1e-5)
     parser.add_argument("--seed", type=int, default=3407)
