@@ -63,8 +63,11 @@ def evaluate(model, test_loader, model_name, rel=None, save_path=""):
                 q, c, r, sd,qd = dcur["qseqs"], dcur["cseqs"], dcur["rseqs"], dcur["sdseqs"],dcur["qdseqs"]
                 qshft, cshft, rshft, sdshft,qdshft = dcur["shft_qseqs"], dcur["shft_cseqs"], dcur["shft_rseqs"], dcur["shft_sdseqs"],dcur["shft_qdseqs"]
                 sd, qd, sdshft, qdshft = sd.to(device), qd.to(device), sdshft.to(device), qdshft.to(device)
+            elif model_name in ["mockt"]:
+                q, c, r, s = dcur["qseqs"], dcur["cseqs"], dcur["rseqs"], dcur["ground_seq"].to(device)
+                qshft, cshft, rshft = dcur["shft_qseqs"], dcur["shft_cseqs"], dcur["shft_rseqs"]
             else:
-                q, c, r = dcur["qseqs"], dcur["cseqs"], dcur["rseqs"] 
+                q, c, r = dcur["qseqs"], dcur["cseqs"], dcur["rseqs"]
                 qshft, cshft, rshft= dcur["shft_qseqs"], dcur["shft_cseqs"], dcur["shft_rseqs"]
             m, sm = dcur["masks"], dcur["smasks"]
             q, c, r, qshft, cshft, rshft, m, sm = q.to(device), c.to(device), r.to(device), qshft.to(device), cshft.to(device), rshft.to(device), m.to(device), sm.to(device)
@@ -114,8 +117,11 @@ def evaluate(model, test_loader, model_name, rel=None, save_path=""):
             elif model_name == "saint":
                 y = model(cq.long(), cc.long(), r.long())
                 y = y[:, 1:]
-            elif model_name in ["akt","extrakt","folibikt", "robustkt", "akt_vector", "akt_norasch", "akt_mono", "akt_attn", "aktattn_pos", "aktmono_pos", "akt_raschx", "akt_raschy", "aktvec_raschx", "lefokt_akt", "fluckt"]:                                
+            elif model_name in ["akt","extrakt","folibikt", "robustkt", "akt_vector", "akt_norasch", "akt_mono", "akt_attn", "aktattn_pos", "aktmono_pos", "akt_raschx", "akt_raschy", "aktvec_raschx", "lefokt_akt", "fluckt"]:
                 y, reg_loss = model(cc.long(), cr.long(), cq.long())
+                y = y[:,1:]
+            elif model_name in ["mockt"]:
+                y, reg_loss = model(s.long(), cc.long(), cr.long(), cq.long())
                 y = y[:,1:]
             elif model_name in ["dtransformer"]:
                 output, *_ = model.predict(cc.long(), cr.long(), cq.long())
