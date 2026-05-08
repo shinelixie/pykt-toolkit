@@ -72,6 +72,8 @@ graph based models and attention based models in our work, we mainly develop the
 +------------+----------------+
 | MoC-KT | Attention      |
 +------------+----------------+
+| FA-KT  | Attention      |
++------------+----------------+
 
 DKT
 ---
@@ -503,9 +505,18 @@ RobustKT decouples cognitive patterns and random factors through smoothing and s
 
 MoC-KT
 ------
-MoC-KT combines multi-scale causal convolution frequency layers with attention-based knowledge retrieval to capture both short-term and long-term learning patterns. It adaptively applies convolution kernels of different sizes based on actual sequence length, and employs ALiBi positional bias with exponential decay attention for robust length generalization.
+MoC-KT disentangles stable progression from short-term fluctuations via multi-scale causal convolutions with adaptive segmentation, and applies kerple-based decay attention to balance local and global dependencies, mitigating cognitive mirage from learner heterogeneity.
 
 .. figure:: ../pics/mockt.png
    :alt:
 
 `Mingliang, Hou, et al. "MoC-KT: Mixture of Convolutions for Knowledge Tracing." ACM Transactions on Information Systems. 2026.`
+
+FA-KT
+-----
+FA-KT decomposes student interaction sequences into diverse frequency components and routes them through a mixture of heterogeneous experts with complementary frequency biases, where a frequency-aware router adaptively combines experts per student to overcome the fixed inductive bias of single-encoder KT models.
+
+.. figure:: ../pics/fa-kt.png
+   :alt:
+
+`Youheng, Bai, et al. "A Frequency-Aware Mixture of Heterogeneous Experts Framework for Knowledge Tracing." Proceedings of the ACM on Web Conference 2026.`

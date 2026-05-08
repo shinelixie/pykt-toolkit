@@ -52,6 +52,8 @@ class MOCKTDataset(Dataset):
                 self.dori = pd.read_pickle(processed_data)
                 for key in self.dori:
                     self.dori[key] = self.dori[key]#[:100]
+            if "ground_seq" not in self.dori:
+                self.dori["ground_seq"] = (self.dori["rseqs"] != -1).sum(dim=1, keepdim=True).float()
         print(f"file path: {file_path}, qlen: {len(self.dori['qseqs'])}, clen: {len(self.dori['cseqs'])}, rlen: {len(self.dori['rseqs'])}")
 
     def __len__(self):
