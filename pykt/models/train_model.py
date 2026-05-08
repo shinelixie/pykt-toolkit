@@ -66,7 +66,7 @@ def cal_loss(model, ys, r, rshft, sm, preloss=[]):
         loss_w2 = loss_w2.mean() / model.num_c
 
         loss = loss + model.lambda_r * loss_r + model.lambda_w1 * loss_w1 + model.lambda_w2 * loss_w2
-    elif model_name in ["akt","extrakt","folibikt", "robustkt", "akt_vector", "akt_norasch", "akt_mono", "akt_attn", "aktattn_pos", "aktmono_pos", "akt_raschx", "akt_raschy", "aktvec_raschx","lefokt_akt", "dtransformer", "fluckt"]:
+    elif model_name in ["mockt", "akt","extrakt","folibikt", "robustkt", "akt_vector", "akt_norasch", "akt_mono", "akt_attn", "aktattn_pos", "aktmono_pos", "akt_raschx", "akt_raschy", "aktvec_raschx","lefokt_akt", "dtransformer", "fluckt"]:
         y = torch.masked_select(ys[0], sm)
         t = torch.masked_select(rshft, sm)
         loss = binary_cross_entropy(y.double(), t.double()) + preloss[0]
@@ -90,6 +90,9 @@ def model_forward(model, data, rel=None):
     if model_name in ["dimkt"]:
         q, c, r, t,sd,qd = dcur["qseqs"].to(device), dcur["cseqs"].to(device), dcur["rseqs"].to(device), dcur["tseqs"].to(device),dcur["sdseqs"].to(device),dcur["qdseqs"].to(device)
         qshft, cshft, rshft, tshft,sdshft,qdshft = dcur["shft_qseqs"].to(device), dcur["shft_cseqs"].to(device), dcur["shft_rseqs"].to(device), dcur["shft_tseqs"].to(device),dcur["shft_sdseqs"].to(device),dcur["shft_qdseqs"].to(device)
+    elif model_name in ["mockt"]:
+        q, c, r, t, s = dcur["qseqs"].to(device), dcur["cseqs"].to(device), dcur["rseqs"].to(device), dcur["tseqs"].to(device), dcur["ground_seq"].to(device)
+        qshft, cshft, rshft, tshft = dcur["shft_qseqs"].to(device), dcur["shft_cseqs"].to(device), dcur["shft_rseqs"].to(device), dcur["shft_tseqs"].to(device)
     else:
         q, c, r, t = dcur["qseqs"].to(device), dcur["cseqs"].to(device), dcur["rseqs"].to(device), dcur["tseqs"].to(device)
         qshft, cshft, rshft, tshft = dcur["shft_qseqs"].to(device), dcur["shft_cseqs"].to(device), dcur["shft_rseqs"].to(device), dcur["shft_tseqs"].to(device)
@@ -217,8 +220,12 @@ def model_forward(model, data, rel=None):
     elif model_name in ["saint"]:
         y = model(cq.long(), cc.long(), r.long())
         ys.append(y[:, 1:])
-    elif model_name in ["akt","extrakt","folibikt", "robustkt", "akt_vector", "akt_norasch", "akt_mono", "akt_attn", "aktattn_pos", "aktmono_pos", "akt_raschx", "akt_raschy", "aktvec_raschx", "lefokt_akt", "fluckt"]:               
+    elif model_name in ["akt","extrakt","folibikt", "robustkt", "akt_vector", "akt_norasch", "akt_mono", "akt_attn", "aktattn_pos", "aktmono_pos", "akt_raschx", "akt_raschy", "aktvec_raschx", "lefokt_akt", "fluckt"]:
         y, reg_loss = model(cc.long(), cr.long(), cq.long())
+        ys.append(y[:,1:])
+        preloss.append(reg_loss)
+    elif model_name in ["mockt"]:
+        y, reg_loss = model(s.long(), cc.long(), cr.long(), cq.long())
         ys.append(y[:,1:])
         preloss.append(reg_loss)
     elif model_name in ["atkt", "atktfix"]:

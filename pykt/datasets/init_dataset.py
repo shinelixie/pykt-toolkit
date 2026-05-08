@@ -12,6 +12,7 @@ from .que_data_loader import KTQueDataset
 from pykt.config import que_type_models
 from .dimkt_dataloader import DIMKTDataset
 from .que_data_loader_promptkt import KTQueDataset_promptKT
+from .mockt_data_loader import MOCKTDataset
 from .pretrain_utils import get_pretrain_data
 
 
@@ -101,6 +102,12 @@ def init_test_datasets(data_config, model_name, batch_size, diff_level=None, arg
         if "test_question_file" in data_config:
             test_question_dataset = DIMKTDataset(data_config["dpath"],os.path.join(data_config["dpath"], data_config["test_question_file"]), data_config["input_type"], {-1}, True, diff_level=diff_level)
             test_question_window_dataset = DIMKTDataset(data_config["dpath"],os.path.join(data_config["dpath"], data_config["test_question_window_file"]), data_config["input_type"], {-1}, True, diff_level=diff_level)
+    elif model_name in ["mockt"]:
+        test_dataset = MOCKTDataset(os.path.join(data_config["dpath"], data_config["test_file"]), data_config["input_type"], {-1})
+        test_window_dataset = MOCKTDataset(os.path.join(data_config["dpath"], data_config["test_window_file"]), data_config["input_type"], {-1})
+        if "test_question_file" in data_config:
+            test_question_dataset = MOCKTDataset(os.path.join(data_config["dpath"], data_config["test_question_file"]), data_config["input_type"], {-1}, True)
+            test_question_window_dataset = MOCKTDataset(os.path.join(data_config["dpath"], data_config["test_question_window_file"]), data_config["input_type"], {-1}, True)
     else:
         test_dataset = KTDataset(os.path.join(data_config["dpath"], data_config["test_file"]), data_config["input_type"], {-1})
         test_window_dataset = KTDataset(os.path.join(data_config["dpath"], data_config["test_window_file"]), data_config["input_type"], {-1})
@@ -202,6 +209,9 @@ def init_dataset4train(dataset_name, model_name, data_config, i, batch_size, dif
     elif model_name == "dimkt":
         curvalid = DIMKTDataset(data_config["dpath"],os.path.join(data_config["dpath"], data_config["train_valid_file"]), data_config["input_type"], {i}, diff_level=diff_level)
         curtrain = DIMKTDataset(data_config["dpath"],os.path.join(data_config["dpath"], data_config["train_valid_file"]), data_config["input_type"], all_folds - {i}, diff_level=diff_level)
+    elif model_name == "mockt":
+        curvalid = MOCKTDataset(os.path.join(data_config["dpath"], data_config["train_valid_file"]), data_config["input_type"], {i})
+        curtrain = MOCKTDataset(os.path.join(data_config["dpath"], data_config["train_valid_file"]), data_config["input_type"], all_folds - {i})
     else:
         curvalid = KTDataset(os.path.join(data_config["dpath"], data_config["train_valid_file"]), data_config["input_type"], {i})
         curtrain = KTDataset(os.path.join(data_config["dpath"], data_config["train_valid_file"]), data_config["input_type"], all_folds - {i})
