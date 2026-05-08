@@ -82,6 +82,7 @@ The hyper parameter tunning results of our experiments about all the DLKT models
 27. UKT: Uncertainty-aware Knowledge Tracing
 28. HCGKT: Hierarchical Contrastive Graph Knowledge Tracing with Multi-level Feature Learning
 29. RobustKT: Enhancing Knowledge Tracing through Decoupling Cognitive Pattern from Error-Prone Data
+30. MoCKT: : Mixture of Convolutions for Knowledge Tracing
 
 ## Citation
 
