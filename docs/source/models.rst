@@ -70,6 +70,8 @@ graph based models and attention based models in our work, we mainly develop the
 +------------+----------------+
 | UKT    | Attention      |
 +------------+----------------+
+| MoC-KT | Attention      |
++------------+----------------+
 
 DKT
 ---
@@ -498,3 +500,12 @@ RobustKT decouples cognitive patterns and random factors through smoothing and s
 
 `Teng, Guo, et al. "Enhancing Knowledge Tracing through Decoupling Cognitive Pattern from Error-Prone Data." WWW '25: Proceedings of the ACM on Web Conference 2025.
 <https://dl.acm.org/doi/10.1145/3696410.3714486>`__
+
+MoC-KT
+------
+MoC-KT combines multi-scale causal convolution frequency layers with attention-based knowledge retrieval to capture both short-term and long-term learning patterns. It adaptively applies convolution kernels of different sizes based on actual sequence length, and employs ALiBi positional bias with exponential decay attention for robust length generalization.
+
+.. figure:: ../pics/mockt.png
+   :alt:
+
+`Mingliang, Hou, et al. "MoC-KT: Mixture of Convolutions for Knowledge Tracing." ACM Transactions on Information Systems. 2026.`
