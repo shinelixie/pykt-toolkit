@@ -95,7 +95,7 @@ def evaluate(model, test_loader, model_name, rel=None, save_path=""):
                 y = y[:,1:]
                 if q.numel() > 0:
                     c,cshft = q,qshft   #question level 
-            elif model_name in ["bakt_time"]:
+            elif model_name in ["datakt"]:
                 y = model(dcur, dgaps)
                 y = y[:,1:]
             elif model_name in ["fa_kt"]:
@@ -431,7 +431,7 @@ def evaluate_question(model, test_loader, model_name, fusion_type=["early_fusion
                 y, h, k = model(cc.long(), cr.long(), True)
                 y = y[:,1:]
                 
-            elif model_name in ["bakt_time"]:
+            elif model_name in ["datakt"]:
                 y, h = model(dcurori, dgaps, qtest=True, train=False)
                 y = y[:,1:]
                 # start_hemb = torch.tensor([-1] * (h.shape[0] * h.shape[2])).reshape(h.shape[0], 1, h.shape[2]).to(device)
@@ -969,7 +969,7 @@ def predict_each_group(dtotal, dcur, dforget, curdforget, is_repeat, qidx, uid, 
             m = nn.Sigmoid()
             y = m(output)
             pred = y[0][-1]
-        elif model_name in ["bakt_time"]:
+        elif model_name in ["datakt"]:
            if qout != None:
                curq = torch.tensor([[qout.item()]]).to(device)
                qinshft = torch.cat((qin[:,1:], curq), axis=1)
@@ -1374,7 +1374,7 @@ def predict_each_group2(dtotal, dcur, dforget, curdforget, is_repeat, qidx, uid,
             ccsd = cursd
             ccqd = curqd
             y = model(ccq.long(),ccc.long(),ccsd.long(),ccqd.long(),ccr.long(),curqshft.long(),curcshft.long(),cursdshft.long(),curqdshft.long())
-        elif model_name in ["bakt_time"]:
+        elif model_name in ["datakt"]:
             dcurinfos = {"qseqs": curq, "cseqs": curc, "rseqs": curr,
                        "shft_qseqs":curqshft,"shft_cseqs":curcshft,"shft_rseqs":currshft}
             # print(f"finald: {finald.keys()}")

@@ -192,7 +192,7 @@ def model_forward(model, data, rel=None):
             y, loss = model.get_loss(cc.long(), cr.long(), cq.long())
         ys.append(y[:,1:])
         preloss.append(loss)
-    elif model_name in ["bakt_time"]:
+    elif model_name in ["datakt"]:
         y, y2, y3 = model(dcur, dgaps, train=True)
         ys = [y[:,1:], y2, y3]
     elif model_name in ["fa_kt"]:
